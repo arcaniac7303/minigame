@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aim Trainer | 손풀기 미니 게임 포털</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <!-- jQuery 3.2.1 로컬 파일 (요청 경로 준수) -->
+    <script src="./assets/js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="./index.html">WarmUp Portal</a>
+            <nav class="gnb" aria-label="주요 메뉴">
+                <ul class="gnb-list">
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./aimTrainer.html">Aim Trainer</a></li>
+                    <li><a href="./dodgeTrainer.html">Dodge Trainer</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="aim-main">
+        <section class="aim-shell container">
+            <!-- 상단 HUD: 현재 티어/점수/진행도를 표시 -->
+            <div class="aim-hud">
+                <div class="hud-item">
+                    <span class="hud-label">Tier</span>
+                    <strong id="tierLabel">-</strong>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Score</span>
+                    <strong id="currentScore">0</strong>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Round</span>
+                    <strong><span id="currentRound">0</span> / <span id="totalRounds">30</span></strong>
+                </div>
+            </div>
+
+            <!-- 게임 보드: 타겟이 실제 생성되는 핵심 플레이 영역 -->
+            <section id="aimBoard" class="aim-board" aria-label="Aim trainer play area">
+                <!-- 시작 전 난이도 선택 오버레이 -->
+                <div id="difficultyOverlay" class="board-overlay">
+                    <div class="overlay-panel">
+                        <h1>Aim Trainer</h1>
+                        <p>난이도를 선택하고 30개의 타겟을 최대한 많이 적중시키세요.</p>
+                        <div id="difficultyButtons" class="difficulty-grid"></div>
+                        <a class="back-link" href="./index.html">포털로 돌아가기</a>
+                    </div>
+                </div>
+
+                <!-- 게임 종료 후 결과 오버레이 -->
+                <div id="resultOverlay" class="board-overlay hidden" aria-live="polite">
+                    <div class="overlay-panel result-panel">
+                        <p id="resultBadge" class="result-badge">RESULT</p>
+                        <h2 id="resultTitle">VICTORY</h2>
+                        <p class="result-score-line">Final Score: <strong id="finalScore">0</strong></p>
+                        <p class="result-score-line">Target Score: <strong id="targetScore">0</strong></p>
+                        <div class="result-stats">
+                            <p class="stat-card">
+                                <span>Accuracy</span>
+                                <strong id="accuracyValue">0.0%</strong>
+                            </p>
+                            <p class="stat-card">
+                                <span>Avg Reaction</span>
+                                <strong id="avgReactionValue">0 ms</strong>
+                            </p>
+                        </div>
+                        <div class="result-actions">
+                            <button id="retryButton" class="play-btn" type="button">재도전</button>
+                            <button id="changeDifficultyButton" class="play-btn ghost-btn" type="button">난이도 선택</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>

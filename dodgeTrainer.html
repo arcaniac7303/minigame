@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dodge Trainer | 손풀기 미니 게임 포털</title>
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <!-- jQuery 3.2.1 로컬 파일 (요청 경로 준수) -->
+    <script src="./assets/js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="./index.html">WarmUp Portal</a>
+            <nav class="gnb" aria-label="주요 메뉴">
+                <ul class="gnb-list">
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./aimTrainer.html">Aim Trainer</a></li>
+                    <li><a href="./dodgeTrainer.html">Dodge Trainer</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="dodge-main">
+        <section class="dodge-shell container">
+            <div class="dodge-hud">
+                <div class="hud-item">
+                    <span class="hud-label">Tier</span>
+                    <strong id="dodgeTierLabel">-</strong>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Time Left</span>
+                    <strong id="dodgeTimeLabel">0.0s</strong>
+                </div>
+                <div class="hud-item">
+                    <span class="hud-label">Hits Taken</span>
+                    <strong id="dodgeHitCount">0</strong>
+                </div>
+            </div>
+
+            <div class="dodge-hp-wrap">
+                <span>HP</span>
+                <div class="dodge-hp-track">
+                    <div id="dodgeHpBar" class="dodge-hp-bar"></div>
+                </div>
+                <strong id="dodgeHpText">100 / 100</strong>
+            </div>
+
+            <section id="dodgeBoard" class="dodge-board" aria-label="Dodge trainer play area">
+                <canvas id="dodgeCanvas" width="1280" height="720"></canvas>
+                <div id="dodgeCountdown" class="dodge-countdown hidden">3</div>
+
+                <div id="dodgeDifficultyOverlay" class="board-overlay">
+                    <div class="overlay-panel">
+                        <h1>Dodge Trainer</h1>
+                        <p>클릭 이동으로 스킬샷을 피하며 끝까지 생존하세요.</p>
+                        <div id="dodgeDifficultyButtons" class="difficulty-grid"></div>
+                        <a class="back-link" href="./index.html">포털로 돌아가기</a>
+                    </div>
+                </div>
+
+                <div id="dodgeResultOverlay" class="board-overlay hidden" aria-live="polite">
+                    <div class="overlay-panel result-panel">
+                        <p id="dodgeResultBadge" class="result-badge">Result</p>
+                        <h2 id="dodgeResultTitle">VICTORY</h2>
+                        <div class="result-stats">
+                            <p class="stat-card">
+                                <span>Survival Time</span>
+                                <strong id="dodgeSurvivalTime">0.0s</strong>
+                            </p>
+                            <p class="stat-card">
+                                <span>Hits Taken</span>
+                                <strong id="dodgeResultHits">0</strong>
+                            </p>
+                        </div>
+                        <div class="result-actions">
+                            <button id="dodgeRetryButton" class="play-btn" type="button">다시 하기</button>
+                            <button id="dodgeChangeDifficultyButton" class="play-btn ghost-btn" type="button">난이도 선택</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>

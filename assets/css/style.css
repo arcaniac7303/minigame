@@ -1,0 +1,716 @@
+/* ================================
+   1) Design Tokens (CSS Variables)
+   사이트 전체 톤앤매너를 통일하기 위한 변수
+================================ */
+:root {
+    --color-bg: #090b13;
+    --color-surface: #121629;
+    --color-surface-2: #1a2035;
+    --color-text: #e9edff;
+    --color-text-muted: #97a0c3;
+    --color-primary: #8c5bff;
+    --color-secondary: #19d4ff;
+    --color-border: rgba(255, 255, 255, 0.12);
+    --color-shadow-neon: rgba(140, 91, 255, 0.45);
+    --color-shadow-neon-2: rgba(25, 212, 255, 0.35);
+
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --space-xs: 8px;
+    --space-sm: 12px;
+    --space-md: 20px;
+    --space-lg: 32px;
+    --space-xl: 64px;
+
+    --container-max: 1200px;
+    --header-h: 72px;
+}
+
+/* 박스 사이징 통일 */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* 기본 바디 스타일 */
+body {
+    margin: 0;
+    font-family: "Segoe UI", "Noto Sans KR", sans-serif;
+    background: radial-gradient(circle at top right, #1a1f3a 0%, var(--color-bg) 45%);
+    color: var(--color-text);
+    line-height: 1.6;
+}
+
+/* 공통 컨테이너: 모든 섹션 너비 기준 */
+.container {
+    width: min(100% - 40px, var(--container-max));
+    margin: 0 auto;
+}
+
+/* 링크 기본 스타일 */
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+/* ================================
+   2) Header / GNB
+================================ */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-h);
+    z-index: 1000;
+    border-bottom: 1px solid var(--color-border);
+    background: rgba(9, 11, 19, 0.82);
+    backdrop-filter: blur(12px);
+}
+
+.header-inner {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-md);
+}
+
+.brand {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.gnb-list {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.gnb-list a {
+    color: var(--color-text-muted);
+    font-weight: 600;
+    transition: color 0.2s ease;
+}
+
+.gnb-list a:hover {
+    color: var(--color-secondary);
+}
+
+/* 모바일 메뉴 버튼 */
+.menu-toggle {
+    display: none;
+    width: 42px;
+    height: 42px;
+    padding: 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-surface);
+    cursor: pointer;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    margin: 5px 0;
+    background: var(--color-text);
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* ================================
+   3) Main / Hero
+================================ */
+main {
+    padding-top: var(--header-h);
+}
+
+.hero-section {
+    padding: var(--space-xl) 0 var(--space-lg);
+}
+
+.hero-content {
+    text-align: center;
+    max-width: 760px;
+}
+
+.hero-kicker {
+    margin: 0 0 var(--space-xs);
+    color: var(--color-secondary);
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.hero-content h1 {
+    margin: 0 0 var(--space-sm);
+    line-height: 1.2;
+    font-size: clamp(1.9rem, 4.5vw, 3rem);
+}
+
+.hero-description {
+    margin: 0 auto;
+    color: var(--color-text-muted);
+    max-width: 620px;
+}
+
+/* ================================
+   4) Game Cards Grid
+================================ */
+.game-section {
+    padding: var(--space-md) 0 var(--space-xl);
+}
+
+.section-title-wrap {
+    margin-bottom: var(--space-md);
+}
+
+.section-title-wrap h2 {
+    margin: 0;
+    font-size: clamp(1.3rem, 3vw, 2rem);
+}
+
+.section-title-wrap p {
+    margin: var(--space-xs) 0 0;
+    color: var(--color-text-muted);
+}
+
+.game-grid {
+    display: grid;
+    gap: var(--space-md);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.game-card {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    background: linear-gradient(165deg, var(--color-surface), var(--color-surface-2));
+    border: 1px solid var(--color-border);
+    transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+}
+
+.game-card img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+}
+
+.game-card-body {
+    padding: var(--space-md);
+}
+
+.game-card h3 {
+    margin: 0 0 var(--space-xs);
+    font-size: 1.15rem;
+}
+
+.game-card p {
+    margin: 0 0 var(--space-md);
+    color: var(--color-text-muted);
+    min-height: 48px;
+}
+
+/* 네온 느낌 버튼 */
+.play-btn {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    color: #ffffff;
+    background: linear-gradient(120deg, var(--color-primary), var(--color-secondary));
+    box-shadow: 0 4px 20px rgba(25, 212, 255, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.play-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(140, 91, 255, 0.4);
+}
+
+.play-btn.disabled {
+    opacity: 0.55;
+    pointer-events: none;
+}
+
+/* 카드 Hover: 부드러운 스케일 + 네온 글로우 */
+.game-card:hover {
+    transform: translateY(-4px) scale(1.02);
+    border-color: rgba(140, 91, 255, 0.45);
+    box-shadow: 0 12px 32px var(--color-shadow-neon), 0 0 28px var(--color-shadow-neon-2);
+}
+
+/* ================================
+   5) Sub Page
+================================ */
+.sub-page-main {
+    min-height: calc(100vh - var(--header-h));
+    display: grid;
+    place-items: center;
+    padding: var(--space-lg) 0;
+}
+
+.sub-hero {
+    width: 100%;
+}
+
+.sub-hero .container {
+    text-align: center;
+    background: linear-gradient(180deg, rgba(140, 91, 255, 0.12), rgba(25, 212, 255, 0.06));
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-xl) var(--space-lg);
+}
+
+.sub-hero h1 {
+    margin: 0 0 var(--space-xs);
+}
+
+.sub-hero p {
+    margin: 0 0 var(--space-md);
+    color: var(--color-text-muted);
+}
+
+/* ================================
+   6) Aim Trainer
+================================ */
+.aim-main {
+    padding-top: calc(var(--header-h) + var(--space-md));
+    padding-bottom: var(--space-lg);
+    min-height: 100vh;
+}
+
+.aim-shell {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.aim-hud {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-sm);
+}
+
+.hud-item {
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: linear-gradient(165deg, var(--color-surface), var(--color-surface-2));
+    padding: var(--space-sm) var(--space-md);
+}
+
+.hud-label {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+}
+
+.hud-item strong {
+    font-size: 1.05rem;
+}
+
+.aim-board {
+    position: relative;
+    width: 100%;
+    min-height: min(72vh, 760px);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(140, 91, 255, 0.3);
+    background:
+        radial-gradient(circle at 50% 50%, rgba(25, 212, 255, 0.08), transparent 48%),
+        linear-gradient(160deg, #101525, #0a0e1a 60%, #090b13);
+    box-shadow: 0 0 28px rgba(25, 212, 255, 0.12);
+    user-select: none;
+}
+
+/* 게임 진행 중에만 보드 내부 커서를 조준점으로 고정 */
+.aim-board.game-active {
+    cursor: crosshair;
+}
+
+/* 타겟 좌표 기준점을 정확히 중앙으로 맞추기 위한 스타일 */
+.aim-target {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #ffb0b0, #ff3b3b 45%, #d00000 100%);
+    box-shadow: 0 0 10px rgba(255, 60, 60, 0.95), 0 0 24px rgba(255, 45, 45, 0.6);
+    transform: translate(-50%, -50%);
+    cursor: crosshair;
+    z-index: 20;
+}
+
+.target-hit-effect {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 2px solid rgba(255, 122, 122, 0.95);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: hitPulse 260ms ease-out forwards;
+    pointer-events: none;
+    z-index: 25;
+}
+
+.miss-text-effect {
+    position: absolute;
+    color: #ff7f7f;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-shadow: 0 0 8px rgba(255, 86, 86, 0.6);
+    transform: translate(-50%, -50%);
+    animation: missFloat 420ms ease-out forwards;
+    pointer-events: none;
+    z-index: 26;
+}
+
+@keyframes missFloat {
+    from {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.92);
+    }
+    to {
+        opacity: 0;
+        transform: translate(-50%, -75%) scale(1.05);
+    }
+}
+
+/* 오답 시 보드가 살짝 붉어지는 피드백 */
+.aim-board.miss-flash::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at center, rgba(255, 43, 43, 0.16), rgba(255, 43, 43, 0.05));
+    animation: missFlash 220ms ease-out;
+}
+
+@keyframes missFlash {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes hitPulse {
+    from {
+        opacity: 1;
+        width: 10px;
+        height: 10px;
+    }
+    to {
+        opacity: 0;
+        width: 52px;
+        height: 52px;
+    }
+}
+
+.board-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 30;
+    display: grid;
+    place-items: center;
+    padding: var(--space-md);
+    background: rgba(4, 6, 12, 0.72);
+    backdrop-filter: blur(4px);
+}
+
+.board-overlay.hidden {
+    display: none;
+}
+
+.overlay-panel {
+    width: min(720px, 100%);
+    border: 1px solid rgba(140, 91, 255, 0.35);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(165deg, rgba(18, 22, 41, 0.97), rgba(11, 15, 29, 0.95));
+    padding: var(--space-lg);
+    text-align: center;
+    box-shadow: 0 0 34px rgba(140, 91, 255, 0.28);
+}
+
+.overlay-panel h1,
+.overlay-panel h2 {
+    margin: 0 0 var(--space-xs);
+}
+
+.overlay-panel p {
+    margin: 0 0 var(--space-md);
+    color: var(--color-text-muted);
+}
+
+.difficulty-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+.difficulty-btn {
+    border: 1px solid rgba(25, 212, 255, 0.3);
+    border-radius: 12px;
+    background: #151a2e;
+    color: var(--color-text);
+    padding: 11px 10px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.difficulty-btn:hover {
+    transform: translateY(-2px);
+    border-color: rgba(140, 91, 255, 0.7);
+    box-shadow: 0 8px 22px rgba(140, 91, 255, 0.35);
+}
+
+.back-link {
+    color: var(--color-secondary);
+    font-weight: 600;
+}
+
+.result-panel {
+    max-width: 520px;
+}
+
+.result-badge {
+    margin-bottom: 4px;
+    font-size: 0.78rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+#resultTitle.victory {
+    color: #ab86ff;
+    text-shadow: 0 0 10px rgba(171, 134, 255, 0.8), 0 0 25px rgba(25, 212, 255, 0.55);
+}
+
+#resultTitle.defeat {
+    color: #a8acba;
+    text-shadow: none;
+}
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+    flex-wrap: wrap;
+    margin-top: var(--space-sm);
+}
+
+.result-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-sm);
+    margin: 0 0 var(--space-sm);
+}
+
+.stat-card {
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid rgba(25, 212, 255, 0.25);
+    border-radius: 12px;
+    background: rgba(15, 20, 36, 0.7);
+}
+
+.stat-card span {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--color-text-muted);
+    margin-bottom: 3px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+}
+
+.stat-card strong {
+    font-size: 1.2rem;
+    color: #a8f0ff;
+    text-shadow: 0 0 8px rgba(25, 212, 255, 0.35);
+}
+
+.ghost-btn {
+    background: transparent;
+    border: 1px solid var(--color-border);
+    box-shadow: none;
+}
+
+/* ================================
+   7) Dodge Trainer
+================================ */
+.dodge-main {
+    padding-top: calc(var(--header-h) + var(--space-md));
+    padding-bottom: var(--space-lg);
+    min-height: 100vh;
+}
+
+.dodge-shell {
+    display: grid;
+    gap: var(--space-sm);
+}
+
+.dodge-hud {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-sm);
+}
+
+.dodge-hp-wrap {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 10px 12px;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: linear-gradient(165deg, var(--color-surface), var(--color-surface-2));
+}
+
+.dodge-hp-track {
+    position: relative;
+    height: 12px;
+    border-radius: 999px;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.dodge-hp-bar {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #26e6ff, #8c5bff 60%, #ff547d);
+    transition: width 240ms ease;
+}
+
+.dodge-board {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    border: 1px solid rgba(25, 212, 255, 0.32);
+    min-height: min(72vh, 760px);
+    background: #090d1a;
+}
+
+#dodgeCanvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+    background:
+        linear-gradient(rgba(96, 111, 173, 0.14) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(96, 111, 173, 0.14) 1px, transparent 1px),
+        radial-gradient(circle at center, rgba(25, 212, 255, 0.08), transparent 50%),
+        #090d1a;
+    background-size: 36px 36px, 36px 36px, auto, auto;
+    cursor: crosshair;
+}
+
+.dodge-countdown {
+    position: absolute;
+    inset: 0;
+    z-index: 28;
+    display: grid;
+    place-items: center;
+    font-size: clamp(3rem, 11vw, 8rem);
+    font-weight: 800;
+    color: #ccf7ff;
+    text-shadow: 0 0 15px rgba(25, 212, 255, 0.7), 0 0 35px rgba(140, 91, 255, 0.4);
+    pointer-events: none;
+}
+
+/* ================================
+   8) Responsive Breakpoints
+================================ */
+/* 태블릿: 카드 2열 */
+@media (max-width: 1024px) {
+    .game-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .difficulty-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dodge-hud {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* 모바일: GNB를 햄버거/슬라이드다운으로 전환 + 카드 1열 */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: inline-block;
+    }
+
+    .gnb {
+        display: none;
+        position: absolute;
+        top: var(--header-h);
+        left: 0;
+        width: 100%;
+        border-bottom: 1px solid var(--color-border);
+        background: rgba(13, 16, 29, 0.98);
+    }
+
+    .gnb.is-open {
+        display: block;
+    }
+
+    .gnb-list {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+    }
+
+    .gnb-list li a {
+        display: block;
+        padding: 14px 20px;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .game-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-section {
+        padding-top: var(--space-lg);
+    }
+
+    .aim-hud {
+        grid-template-columns: 1fr;
+    }
+
+    .aim-board {
+        min-height: 62vh;
+    }
+
+    .difficulty-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .result-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .dodge-hud {
+        grid-template-columns: 1fr;
+    }
+
+    .dodge-hp-wrap {
+        grid-template-columns: 1fr;
+    }
+
+    .dodge-board {
+        min-height: 62vh;
+    }
+}
