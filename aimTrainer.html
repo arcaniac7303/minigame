@@ -32,6 +32,10 @@
             <!-- 상단 HUD: 현재 티어/점수/진행도를 표시 -->
             <div class="aim-hud">
                 <div class="hud-item">
+                    <span class="hud-label">Mode</span>
+                    <strong id="modeLabel">-</strong>
+                </div>
+                <div class="hud-item">
                     <span class="hud-label">Tier</span>
                     <strong id="tierLabel">-</strong>
                 </div>
@@ -51,7 +55,10 @@
                 <div id="difficultyOverlay" class="board-overlay">
                     <div class="overlay-panel">
                         <h1>Aim Trainer</h1>
-                        <p>난이도를 선택하고 30개의 타겟을 최대한 많이 적중시키세요.</p>
+                        <p>훈련 모드와 난이도를 선택하고 목표 점수를 달성하세요.</p>
+                        <h3 class="overlay-subtitle">훈련 모드</h3>
+                        <div id="modeButtons" class="mode-grid"></div>
+                        <h3 class="overlay-subtitle">난이도</h3>
                         <div id="difficultyButtons" class="difficulty-grid"></div>
                         <a class="back-link" href="./index.html">포털로 돌아가기</a>
                     </div>

@@ -293,7 +293,7 @@ main {
 
 .aim-hud {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: var(--space-sm);
 }
 
@@ -348,6 +348,10 @@ main {
     transform: translate(-50%, -50%);
     cursor: crosshair;
     z-index: 20;
+}
+
+.aim-target.is-moving {
+    transition: transform 140ms linear;
 }
 
 .target-hit-effect {
@@ -447,6 +451,14 @@ main {
     margin: 0 0 var(--space-xs);
 }
 
+.overlay-subtitle {
+    margin: 0 0 8px;
+    font-size: 0.95rem;
+    color: #cbd5ff;
+    text-align: left;
+    letter-spacing: 0.4px;
+}
+
 .overlay-panel p {
     margin: 0 0 var(--space-md);
     color: var(--color-text-muted);
@@ -455,6 +467,13 @@ main {
 .difficulty-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+.mode-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-sm);
     margin-bottom: var(--space-md);
 }
@@ -474,6 +493,11 @@ main {
     transform: translateY(-2px);
     border-color: rgba(140, 91, 255, 0.7);
     box-shadow: 0 8px 22px rgba(140, 91, 255, 0.35);
+}
+
+.difficulty-btn.active {
+    border-color: rgba(25, 212, 255, 0.85);
+    box-shadow: 0 0 0 1px rgba(25, 212, 255, 0.25) inset;
 }
 
 .back-link {
@@ -641,6 +665,10 @@ main {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
+    .mode-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
     .dodge-hud {
         grid-template-columns: 1fr 1fr;
     }
@@ -695,6 +723,10 @@ main {
     }
 
     .difficulty-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .mode-grid {
         grid-template-columns: 1fr;
     }
 

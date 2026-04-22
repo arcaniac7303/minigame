@@ -48,27 +48,36 @@ function initAimTrainer() {
         { key: "master", label: "Master", duration: 520, spread: 0.9, targetScore: 23 },
         { key: "challenger", label: "Challenger", duration: 360, spread: 1.0, targetScore: 25 }
     ];
+    var modes = [
+        { key: "classic", label: "Classic", desc: "기본 반응 에임", targetCount: 1, size: 22, move: false, scorePerHit: 1, missDelay: 500, reactionWindow: 0 },
+        { key: "precision", label: "Precision", desc: "작은 타겟 정밀 사격", targetCount: 1, size: 14, move: false, scorePerHit: 2, missDelay: 420, reactionWindow: 0 },
+        { key: "doubleshot", label: "Double Shot", desc: "동시 2개 타겟", targetCount: 2, size: 18, move: false, scorePerHit: 1, missDelay: 520, reactionWindow: 0 },
+        { key: "moving", label: "Moving Targets", desc: "이동 표적 트래킹", targetCount: 1, size: 20, move: true, scorePerHit: 1, missDelay: 380, reactionWindow: 0 },
+        { key: "reflex", label: "Reflex Test", desc: "짧은 반응 시간 테스트", targetCount: 1, size: 18, move: false, scorePerHit: 1, missDelay: 300, reactionWindow: 700 }
+    ];
 
     var totalRounds = 30;
     var currentRound = 0;
     var currentScore = 0;
     var selectedTier = null;
+    var selectedMode = modes[0];
     var activeTargetTimeout = null;
     var interTargetDelayTimeout = null;
     var gameRunning = false;
-    var currentTargetId = 0;
     var previousTargetPoint = null;
-    var targetSpawnTimestamp = 0;
+    var activeTargetsCount = 0;
     var totalClicks = 0;
     var totalHits = 0;
     var reactionTimeSamples = [];
 
     var $difficultyOverlay = $("#difficultyOverlay");
     var $resultOverlay = $("#resultOverlay");
+    var $modeButtons = $("#modeButtons");
     var $difficultyButtons = $("#difficultyButtons");
     var $currentScore = $("#currentScore");
     var $currentRound = $("#currentRound");
     var $totalRounds = $("#totalRounds");
+    var $modeLabel = $("#modeLabel");
     var $tierLabel = $("#tierLabel");
     var $finalScore = $("#finalScore");
     var $targetScore = $("#targetScore");
@@ -79,22 +88,32 @@ function initAimTrainer() {
     var $accuracyValue = $("#accuracyValue");
     var $avgReactionValue = $("#avgReactionValue");
 
-    function renderTierButtons() {
-        var html = "";
-        var i = 0;
-        for (i = 0; i < tiers.length; i += 1) {
-            html += '<button type="button" class="difficulty-btn" data-tier-index="' + i + '">' + tiers[i].label + "</button>";
-        }
-        $difficultyButtons.html(html);
-    }
-
     function updateHud() {
         $currentScore.text(currentScore);
         $currentRound.text(currentRound);
         $tierLabel.text(selectedTier ? selectedTier.label : "-");
+        $modeLabel.text(selectedMode ? selectedMode.label : "-");
     }
 
-    function clearActiveTarget() {
+    function renderModeButtons() {
+        var html = "";
+        var i = 0;
+        for (i = 0; i < modes.length; i += 1) {
+            html += '<button type="button" class="difficulty-btn mode-btn' + (i === 0 ? " active" : "") + '" data-mode-index="' + i + '">' + modes[i].label + "</button>";
+        }
+        $modeButtons.html(html);
+    }
+
+    function renderTierButtons() {
+        var html = "";
+        var i = 0;
+        for (i = 0; i < tiers.length; i += 1) {
+            html += '<button type="button" class="difficulty-btn tier-btn" data-tier-index="' + i + '">' + tiers[i].label + "</button>";
+        }
+        $difficultyButtons.html(html);
+    }
+
+    function clearTimers() {
         if (activeTargetTimeout) {
             clearTimeout(activeTargetTimeout);
             activeTargetTimeout = null;
@@ -103,15 +122,20 @@ function initAimTrainer() {
             clearTimeout(interTargetDelayTimeout);
             interTargetDelayTimeout = null;
         }
+    }
+
+    function clearActiveTarget() {
+        clearTimers();
+        activeTargetsCount = 0;
         $aimBoard.find(".aim-target").remove();
     }
 
-    function createRandomPointForTier(tier) {
+    function createRandomPointForTier(tier, size) {
         var boardWidth = $aimBoard.innerWidth();
         var boardHeight = $aimBoard.innerHeight();
         var centerX = boardWidth / 2;
         var centerY = boardHeight / 2;
-        var safePadding = 22;
+        var safePadding = Math.max(18, size + 6);
         var maxOffsetX = Math.max((boardWidth * tier.spread) / 2 - safePadding, 20);
         var maxOffsetY = Math.max((boardHeight * tier.spread) / 2 - safePadding, 20);
         var x = centerX + (Math.random() * 2 - 1) * maxOffsetX;
@@ -173,7 +197,98 @@ function initAimTrainer() {
         }, delayMs);
     }
 
+    function getModeAdjustedDuration() {
+        var duration = selectedTier.duration;
+        if (selectedMode.key === "precision") {
+            duration = Math.max(300, selectedTier.duration - 120);
+        } else if (selectedMode.key === "doubleshot") {
+            duration = Math.max(340, selectedTier.duration - 80);
+        } else if (selectedMode.key === "moving") {
+            duration = Math.max(420, selectedTier.duration + 200);
+        } else if (selectedMode.key === "reflex") {
+            duration = Math.max(220, selectedTier.duration - 200);
+        }
+        return duration;
+    }
+
+    function computeTargetScore() {
+        var modeBonus = 0;
+        if (selectedMode.key === "precision") {
+            modeBonus = 4;
+        } else if (selectedMode.key === "doubleshot") {
+            modeBonus = 3;
+        } else if (selectedMode.key === "moving") {
+            modeBonus = 2;
+        } else if (selectedMode.key === "reflex") {
+            modeBonus = 3;
+        }
+        return selectedTier.targetScore + modeBonus;
+    }
+
+    function spawnSingleTarget(spawnDuration) {
+        var point = createRandomPointForTier(selectedTier, selectedMode.size);
+        var $target = $('<button type="button" class="aim-target" aria-label="target"></button>');
+        var spawnedAt = Date.now();
+        var boardWidth = $aimBoard.innerWidth();
+        var boardHeight = $aimBoard.innerHeight();
+
+        $target.css({
+            left: point.x + "px",
+            top: point.y + "px",
+            width: selectedMode.size + "px",
+            height: selectedMode.size + "px"
+        });
+
+        if (selectedMode.move) {
+            var dx = (Math.random() * 2 - 1) * Math.max(45, boardWidth * 0.12);
+            var dy = (Math.random() * 2 - 1) * Math.max(45, boardHeight * 0.12);
+            var nextX = Math.max(selectedMode.size, Math.min(boardWidth - selectedMode.size, point.x + dx));
+            var nextY = Math.max(selectedMode.size, Math.min(boardHeight - selectedMode.size, point.y + dy));
+            $target.addClass("is-moving");
+            setTimeout(function () {
+                if (gameRunning && $target.parent().length > 0) {
+                    $target.css({
+                        left: nextX + "px",
+                        top: nextY + "px",
+                        transform: "translate(-50%, -50%) scale(1.05)"
+                    });
+                }
+            }, 20);
+        }
+
+        $target.on("mousedown", function (event) {
+            event.preventDefault();
+            event.stopPropagation();
+            if (!gameRunning) {
+                return;
+            }
+            totalClicks += 1;
+            totalHits += 1;
+            if (selectedMode.reactionWindow > 0 && Date.now() - spawnedAt > selectedMode.reactionWindow) {
+                currentScore = Math.max(0, currentScore - 1);
+            } else {
+                currentScore += selectedMode.scorePerHit;
+            }
+            reactionTimeSamples.push(Date.now() - spawnedAt);
+            spawnHitEffect({
+                x: parseFloat($target.css("left")),
+                y: parseFloat($target.css("top"))
+            });
+            $target.remove();
+            activeTargetsCount = Math.max(0, activeTargetsCount - 1);
+            updateHud();
+            if (activeTargetsCount === 0) {
+                clearTimers();
+                queueNextTarget(40);
+            }
+        });
+        $aimBoard.append($target);
+    }
+
     function spawnNextTarget() {
+        var i = 0;
+        var spawnDuration = getModeAdjustedDuration();
+
         if (!gameRunning) {
             return;
         }
@@ -185,48 +300,30 @@ function initAimTrainer() {
         clearActiveTarget();
         currentRound += 1;
         updateHud();
+        activeTargetsCount = selectedMode.targetCount;
 
-        var point = createRandomPointForTier(selectedTier);
-        var $target = $('<button type="button" class="aim-target" aria-label="target"></button>');
-        currentTargetId += 1;
-        previousTargetPoint = { x: point.x, y: point.y };
-        targetSpawnTimestamp = Date.now();
-
-        $target.css({ left: point.x + "px", top: point.y + "px" });
-        $target.on("mousedown", function (event) {
-            event.preventDefault();
-            event.stopPropagation();
-            if (!gameRunning) {
-                return;
-            }
-            totalClicks += 1;
-            totalHits += 1;
-            currentScore += 1;
-            reactionTimeSamples.push(Date.now() - targetSpawnTimestamp);
-            updateHud();
-            spawnHitEffect(point);
-            clearActiveTarget();
-            queueNextTarget(30);
-        });
-        $aimBoard.append($target);
+        for (i = 0; i < selectedMode.targetCount; i += 1) {
+            spawnSingleTarget(spawnDuration);
+        }
+        previousTargetPoint = createRandomPointForTier(selectedTier, selectedMode.size);
 
         activeTargetTimeout = setTimeout(function () {
             clearActiveTarget();
             spawnNextTarget();
-        }, selectedTier.duration);
+        }, spawnDuration);
     }
 
     function startGame(tierIndex) {
         selectedTier = tiers[tierIndex];
         currentRound = 0;
         currentScore = 0;
-        currentTargetId = 0;
         previousTargetPoint = null;
-        targetSpawnTimestamp = 0;
         totalClicks = 0;
         totalHits = 0;
         reactionTimeSamples = [];
         gameRunning = true;
+        $difficultyButtons.find(".tier-btn").removeClass("active");
+        $difficultyButtons.find('[data-tier-index="' + tierIndex + '"]').addClass("active");
         $difficultyOverlay.addClass("hidden");
         $resultOverlay.addClass("hidden");
         $aimBoard.addClass("game-active");
@@ -235,7 +332,8 @@ function initAimTrainer() {
     }
 
     function endGame() {
-        var isVictory = currentScore >= selectedTier.targetScore;
+        var targetScore = computeTargetScore();
+        var isVictory = currentScore >= targetScore;
         var accuracy = totalClicks === 0 ? 0 : (totalHits / totalClicks) * 100;
         var avgReaction = 0;
         var i = 0;
@@ -251,11 +349,11 @@ function initAimTrainer() {
         }
 
         $finalScore.text(currentScore);
-        $targetScore.text(selectedTier.targetScore);
+        $targetScore.text(targetScore);
         $accuracyValue.text(accuracy.toFixed(1) + "%");
         $avgReactionValue.text(avgReaction + " ms");
         if (isVictory) {
-            $resultBadge.text("Tier Cleared");
+            $resultBadge.text("Mode Cleared");
             $resultTitle.text("VICTORY").removeClass("defeat").addClass("victory");
         } else {
             $resultBadge.text("Need More Practice");
@@ -272,10 +370,21 @@ function initAimTrainer() {
         totalClicks += 1;
         spawnMissEffect({ x: event.pageX - offset.left, y: event.pageY - offset.top });
         clearActiveTarget();
-        queueNextTarget(500);
+        queueNextTarget(selectedMode.missDelay);
     });
 
-    $difficultyButtons.on("click", ".difficulty-btn", function () {
+    $modeButtons.on("click", ".mode-btn", function () {
+        var modeIndex = Number($(this).attr("data-mode-index"));
+        if (Number.isNaN(modeIndex)) {
+            return;
+        }
+        selectedMode = modes[modeIndex];
+        $modeButtons.find(".mode-btn").removeClass("active");
+        $(this).addClass("active");
+        updateHud();
+    });
+
+    $difficultyButtons.on("click", ".tier-btn", function () {
         var tierIndex = Number($(this).attr("data-tier-index"));
         if (!Number.isNaN(tierIndex)) {
             startGame(tierIndex);
@@ -311,6 +420,7 @@ function initAimTrainer() {
     });
 
     $totalRounds.text(totalRounds);
+    renderModeButtons();
     renderTierButtons();
     updateHud();
 }
