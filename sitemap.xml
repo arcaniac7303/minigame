@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://warmupminigame.netlify.app/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>https://warmupminigame.netlify.app/aimTrainer.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://warmupminigame.netlify.app/dodgeTrainer.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>https://warmupminigame.netlify.app/google71cf9077404554ea.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.10</priority>
+  </url>
+</urlset>
