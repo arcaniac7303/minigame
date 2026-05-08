@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>문의하기 | 손풀기 미니 게임 포털</title>
+    <meta name="description" content="WarmUp Portal 문의하기 페이지입니다." />
+    <link rel="stylesheet" href="./assets/css/style.css" />
+    <script src="./assets/js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="./index.html">WarmUp Portal</a>
+            <nav class="gnb" aria-label="주요 메뉴">
+                <ul class="gnb-list">
+                    <li><a href="./index.html">Home</a></li>
+                    <li><a href="./aimTrainer.html">Aim Trainer</a></li>
+                    <li><a href="./dodgeTrainer.html">Dodge Trainer</a></li>
+                    <li><a href="./contact.html">문의하기</a></li>
+                </ul>
+            </nav>
+            <button class="menu-toggle" type="button" aria-label="메뉴 열기" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </header>
+
+    <main class="contact-page">
+        <section class="sub-hero">
+            <div class="container">
+                <p class="hero-kicker">Contact Us</p>
+                <h1>문의하기</h1>
+                <p>WarmUp Portal에 대한 의견, 제안, 개선 요청을 남겨주세요. 최대한 빠르게 확인 후 회신드리겠습니다.</p>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="contact-grid">
+                <article class="contact-card">
+                    <h2>연락 방법</h2>
+                    <p>아래 폼에 내용을 작성하시면 Netlify를 통해 접수가 됩니다.</p>
+                    <ul>
+                        <li><strong>운영 시간:</strong> 월요일 - 금요일, 10:00 - 18:00</li>
+                        <li><strong>지원 언어:</strong> 한국어</li>
+                    </ul>
+                    <p class="contact-help">※ 빠른 확인을 위해 정확한 이메일 주소를 입력해 주세요.</p>
+                </article>
+
+                <article class="contact-form">
+                    <h2>문의 내용 작성</h2>
+                    <form name="contact" method="POST" data-netlify="true">
+                        <input type="hidden" name="form-name" value="contact">
+
+                        <label>이름</label>
+                        <input type="text" name="name" required>
+
+                        <label>이메일</label>
+                        <input type="email" name="email" required>
+
+                        <label>문의 내용</label>
+                        <textarea name="message" required></textarea>
+
+                        <button type="submit">문의 보내기</button>
+                    </form>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>

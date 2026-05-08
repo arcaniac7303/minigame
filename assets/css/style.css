@@ -272,6 +272,116 @@ main {
     margin: 0 0 var(--space-xs);
 }
 
+.contact-page {
+    padding: calc(var(--header-h) + var(--space-lg)) 0 var(--space-xl);
+    min-height: 100vh;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: var(--space-lg);
+    align-items: start;
+}
+
+.contact-card,
+.contact-form {
+    background: linear-gradient(180deg, rgba(18, 22, 41, 0.96), rgba(11, 15, 29, 0.96));
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+}
+
+.contact-card h2,
+.contact-form h2 {
+    margin-top: 0;
+}
+
+.contact-card p,
+.contact-card li,
+.contact-form label {
+    color: var(--color-text-muted);
+}
+
+.contact-card ul {
+    margin: var(--space-md) 0 0;
+    padding-left: 18px;
+}
+
+.contact-card li {
+    margin-bottom: 10px;
+}
+
+.contact-form {
+    display: grid;
+    gap: var(--space-md);
+}
+
+.contact-form label {
+    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.contact-form input,
+.contact-form textarea {
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    padding: 14px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-text);
+    font-size: 1rem;
+}
+
+.contact-form textarea {
+    min-height: 200px;
+    resize: vertical;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+    outline: none;
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 3px rgba(25, 212, 255, 0.12);
+}
+
+.contact-form button {
+    width: fit-content;
+    padding: 12px 20px;
+    border-radius: 999px;
+    border: none;
+    color: #fff;
+    background: linear-gradient(120deg, var(--color-primary), var(--color-secondary));
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.contact-form button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(140, 91, 255, 0.38);
+}
+
+.contact-help {
+    display: block;
+    margin-top: var(--space-xs);
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+}
+
+@media (max-width: 900px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-page {
+        padding-top: calc(var(--header-h) + var(--space-md));
+    }
+}
+
 .sub-hero p {
     margin: 0 0 var(--space-md);
     color: var(--color-text-muted);
