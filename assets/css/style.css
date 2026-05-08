@@ -275,6 +275,8 @@ main {
 .contact-page {
     padding: calc(var(--header-h) + var(--space-lg)) 0 var(--space-xl);
     min-height: 100vh;
+    display: grid;
+    gap: var(--space-md);
 }
 
 .contact-grid {
